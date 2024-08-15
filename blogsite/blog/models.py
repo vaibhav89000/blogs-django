@@ -21,15 +21,28 @@ class User(models.Model):
 
 
 class Blog(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="blogs")
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
 
     def __str__(self):
         return self.title
 
+    # Method to get the like count for this blog
+    def like_count(self):
+        return self.likes.count()
+
+    # Method to get the users who liked this blog
+    def liked_users(self):
+        return [like.user for like in self.likes.all()]
+
 
 class Like(models.Model):
-    post = models.ForeignKey(Blog, on_delete=models.CASCADE)
-    count = models.IntegerField(default=0)
-    users = models.ManyToManyField(User)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="likes")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liked")
+
+    class Meta:
+        unique_together = ("blog", "user")
+
+    def __str__(self):
+        return f"{self.user.name} liked {self.blog.title}"
