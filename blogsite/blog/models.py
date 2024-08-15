@@ -21,7 +21,7 @@ class User(models.Model):
 
 
 class Blog(models.Model):
-    user = models.ForeignKey(User, models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
 
@@ -30,12 +30,6 @@ class Blog(models.Model):
 
 
 class Like(models.Model):
-    post = models.ForeignKey(Blog, models.CASCADE)
+    post = models.ForeignKey(Blog, on_delete=models.CASCADE)
     count = models.IntegerField(default=0)
-    users = models.ManyToManyField(User, models.CASCADE)
-
-    def increase_count(self):
-        self.count += 1
-
-    def decrease_count(self):
-        self.count -= 1
+    users = models.ManyToManyField(User)
