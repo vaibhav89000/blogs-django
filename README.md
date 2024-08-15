@@ -1,3 +1,11 @@
+### Django commands for project creation -
+```sh
+django-admin startproject project_name  
+```
+```sh
+python manage.py startapp app_name
+```
+
 ### The below setup is for windows (Enter into server folder)
 
 1. Creating virtual environment using this command
